@@ -1,0 +1,3 @@
+---
+# defaults file for example_service
+example_service_dir: /opt/example_service

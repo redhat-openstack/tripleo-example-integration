@@ -1,0 +1,7 @@
+---
+# tasks file for example_service
+- name: Ensure /opt/example_service exists
+  become: true
+  file:
+    path: "{{ example_service_dir }}"
+    state: directory
