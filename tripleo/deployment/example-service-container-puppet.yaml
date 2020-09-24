@@ -1,0 +1,201 @@
+heat_template_version: rocky
+
+description: >
+  TripleO example for a containerized service
+
+parameters:
+  ContainerExampleServiceImage:
+    description: image
+    type: string
+  ContainerExampleServiceConfigImage:
+    description: The container image to use for the example service config_volume
+    type: string
+  EndpointMap:
+    default: {}
+    description: Mapping of service endpoint -> protocol. Typically set
+                 via parameter_defaults in the resource registry.
+    type: json
+  ServiceData:
+    default: {}
+    description: Dictionary packing service data
+    type: json
+  ServiceNetMap:
+    default: {}
+    description: Mapping of service_name -> network name. Typically set
+                 via parameter_defaults in the resource registry.  This
+                 mapping overrides those in ServiceNetMapDefaults.
+    type: json
+  DefaultPasswords:
+    default: {}
+    type: json
+  RoleName:
+    default: ''
+    description: Role name on which the service is applied
+    type: string
+  # TODO(emilien) give an example of a RoleParameters
+  RoleParameters:
+    default: {}
+    description: Parameters specific to the role
+    type: json
+  ExampleServicePassword:
+    description: The password for Example Service
+    type: string
+    hidden: true
+  KeystoneRegion:
+    type: string
+    default: 'regionOne'
+    description: Keystone region for endpoint
+  EnableInternalTLS:
+    type: boolean
+    default: false
+
+conditions:
+  internal_tls_enabled: {get_param: EnableInternalTLS}
+
+resources:
+
+  ContainersCommon:
+    type: ../containers-common.yaml
+
+  MySQLClient:
+    type: ../database/mysql-client.yaml
+
+outputs:
+  role_data:
+    description: Role data for the Example service.
+    value:
+      service_name: example_service
+      firewall_rules:
+        '181 example_service':
+          dport:
+            - 13181
+            - 8181
+      keystone_resources:
+        example_service:
+          endpoints:
+            public: {get_param: [EndpointMap, ExampleServicePublic, uri]}
+            internal: {get_param: [EndpointMap, ExampleServiceInternal, uri]}
+            admin: {get_param: [EndpointMap, ExampleServiceAdmin, uri]}
+          users:
+            example_service:
+              password: {get_param: ExampleServicePassword}
+          region: {get_param: KeystoneRegion}
+          service: 'example_service_type'
+      config_settings:
+        example_service::foo: bar
+      service_config_settings:
+        mysql:
+          # TODO(emilien) test that, i don't think it was ever done
+          tripleo::example_service::mysql_user:
+            user: example_service
+            host: {get_param: [EndpointMap, MysqlInternal, host_nobrackets]}
+            dbname: example_service
+            password: {get_param: ExampleServicePassword}
+            allowed_hosts:
+              - '%'
+              - "%{hiera('mysql_bind_host')}"
+      # BEGIN DOCKER SETTINGS
+      puppet_config:
+        config_volume: example_service
+        puppet_tags: example_service_config
+        step_config:
+          list_join:
+            - "\n"
+            - - include ::example_service
+              - {get_attr: [MySQLClient, role_data, step_config]}
+        config_image: {get_param: ContainerExampleServiceConfigImage}
+      kolla_config:
+        /var/lib/kolla/config_files/example_service.json:
+          command: /usr/bin/example-service --config-file /etc/example-service/example-service.conf
+          config_files:
+            - source: "/var/lib/kolla/config_files/src/*"
+              dest: "/"
+              merge: true
+              preserve_properties: true
+          permissions:
+            - path: /var/log/example_service
+              owner: example_service:example_service
+              recurse: true
+      docker_config:
+        map_merge:
+          - step_2:
+              example_service_init_log:
+                image: &example_service_image {get_param: ContainerExampleServiceImage}
+                net: none
+                user: root
+                volumes:
+                  - /var/log/containers/example_service:/var/log/example_service
+                command: ['/bin/bash', '-c', 'chmod 2755 /var/log/example_service; chown -R example_service:example_service /var/log/example_service']
+          - step_4:
+              example_service:
+                image: *example_service_image
+                net: host
+                privileged: false
+                restart: always
+                user: root
+                # TODO(emilien) document healthchecks
+                volumes:
+                  list_concat:
+                    - {get_attr: [ContainersCommon, volumes]}
+                    -
+                      - /var/lib/kolla/config_files/example_service.json:/var/lib/kolla/config_files/config.json:ro
+                      - /var/lib/config-data/puppet-generated/example_service:/var/lib/kolla/config_files/src:ro
+                      - /var/log/containers/example_service:/var/log/example_service
+                      # If using TLS everywhere, this is needed:
+                      # - if:
+                      #     - internal_tls_enabled
+                      #     - - /etc/pki/tls/certs/httpd:/etc/pki/tls/certs/httpd:ro
+                      #     - []
+                      # - if:
+                      #     - internal_tls_enabled
+                      #     - - /etc/pki/tls/private/httpd:/etc/pki/tls/private/httpd:ro
+                      #     - []
+                environment:
+                  KOLLA_CONFIG_STRATEGY: COPY_ALWAYS
+      host_prep_tasks:
+        - name: create persistent directories
+          file:
+            path: "{{ item.path }}"
+            state: directory
+            setype: "{{ item.setype }}"
+            mode: "{{ item.mode }}"
+          with_items:
+            - { 'path': /var/log/containers/example_service, 'setype': container_file_t, 'mode': '0750' }
+      external_deploy_tasks:
+        - name: Configure example_service
+          include_role:
+            name: example_service
+            tasks_from: install
+          when:
+            - step|int == 1
+      update_tasks:
+        - name: Update example_service on the remote host
+          include_role:
+            name: example_service
+            tasks_from: update
+          when:
+            - step|int == 1
+      external_update_tasks:
+        - name: Update example_service from the Undercloud
+          include_role:
+            name: example_service
+            tasks_from: update_from_undercloud
+          when:
+            - step|int == 1
+      upgrade_tasks:
+        - name: Upgrade example_service on the remote host
+          include_role:
+            name: example_service
+            tasks_from: upgrade
+          when:
+            - step|int == 1
+      external_upgrade_tasks:
+        - name: Upgrade example_service from the Undercloud
+          include_role:
+            name: example_service
+            tasks_from: upgrade_from_undercloud
+          when:
+            - step|int == 1
+      # TODO(emilien) figure that out later if actually needed (TLS?)
+      # metadata_settings:
+      #   get_attr: [ApacheServiceBase, role_data, metadata_settings]
