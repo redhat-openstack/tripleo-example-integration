@@ -6,7 +6,7 @@
   * config containers, calling Puppet to configure config files
   * startup containers, using kolla interface to start containers
   * all framework task types
-- Container Image layout (TCIB)
+- WIP: Container Image layout (TCIB)
 - Role modification
 - Package deployment methods
   * virt-customize overcloud-full

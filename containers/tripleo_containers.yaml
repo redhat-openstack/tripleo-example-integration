@@ -1,0 +1,4 @@
+---
+container_images:
+- imagename: myregistry.io/example-namespace/example-service:current-tripleo
+  image_source: tripleo
