@@ -1,4 +1,4 @@
-- Network endpoint integration (EndpointMap, ServiceNetMap)
+- DONE: Network endpoint integration (EndpointMap, ServiceNetMap)
 - Keystone resources (endpoints, users, etc)
 - Database resources (MySQL DB, user, perms)
 - Example of composable service with:
@@ -13,3 +13,4 @@
 - Bonus: rpm packaging
 - Bonus: basic structure for a clean Ansible role (chrony as example?)
 - Bonus: basic puppet module example (for use with container configs)
+- Extra: Have endpoint map file generated at build time

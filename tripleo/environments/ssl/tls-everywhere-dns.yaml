@@ -1,0 +1,16 @@
+# This environment file is used when enabling tls-everywhere-endpoints-dns
+
+parameter_defaults:
+  EndpointMapOverride:
+    ExampleServiceAdmin:
+      protocol: 'https'
+      port: '13181'
+      host: 'CLOUDNAME'
+    ExampleServiceInternal:
+      protocol: 'https'
+      port: '13181'
+      host: 'CLOUDNAME'
+    ExampleServicePublic:
+      protocol: 'https'
+      port: '13181'
+      host: 'CLOUDNAME'
