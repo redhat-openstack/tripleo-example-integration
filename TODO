@@ -6,11 +6,12 @@
   * config containers, calling Puppet to configure config files
   * startup containers, using kolla interface to start containers
   * all framework task types
-- WIP: Container Image layout (TCIB)
-- Role modification
+- DONE: Container Image layout (TCIB)
+- Role modification (Depends-On: https://review.opendev.org/754212)
 - Package deployment methods
-  * virt-customize overcloud-full
+  * virt-customize overcloud-full (doc)
   * deployed-server rpm install with repos
+- Create dumb rpm/service for example to deploy (in container too)
 - WIP: Bonus: rpm packaging
 - DONE: Bonus: basic structure for a clean Ansible role (chrony as example?)
 - Bonus: basic puppet module example (for use with container configs)
