@@ -1,7 +1,7 @@
 - DONE: Network endpoint integration (EndpointMap, ServiceNetMap)
-- Keystone resources (endpoints, users, etc)
-- Database resources (MySQL DB, user, perms)
-- Example of composable service with:
+- DONE: Keystone resources (endpoints, users, etc)
+- DONE: Database resources (MySQL DB, user, perms)
+- DONE: Example of composable service with:
   * hosts prep tasks or deploy tasks just calling an Ansible role
   * config containers, calling Puppet to configure config files
   * startup containers, using kolla interface to start containers
@@ -11,7 +11,7 @@
 - Package deployment methods
   * virt-customize overcloud-full
   * deployed-server rpm install with repos
-- Bonus: rpm packaging
-- Bonus: basic structure for a clean Ansible role (chrony as example?)
+- WIP: Bonus: rpm packaging
+- DONE: Bonus: basic structure for a clean Ansible role (chrony as example?)
 - Bonus: basic puppet module example (for use with container configs)
 - Extra: Have endpoint map file generated at build time

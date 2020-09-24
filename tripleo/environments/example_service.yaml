@@ -1,0 +1,6 @@
+# This heat environment can be used to enable the example service
+resource_registry:
+  OS::TripleO::Services::ExampleService: ../../deployment/example/example-service-container-puppet.yaml
+
+parameter_defaults:
+  ExampleServiceParamExample: foobar
