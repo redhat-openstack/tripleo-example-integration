@@ -30,6 +30,7 @@ Example TripleO 3rd party integration
 
 %install
 install -d -m 0755 %{buildroot}/%{_datadir}/%{name}/scripts
+cp -r scripts/* %{buildroot}%{_datadir}/%{name}/scripts/
 # ansible roles
 install -d -m 0755 %{buildroot}/%{_datadir}/ansible/roles/
 cp -r ansible/roles/* %{buildroot}%{_datadir}/ansible/roles/
