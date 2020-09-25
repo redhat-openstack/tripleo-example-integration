@@ -1,0 +1,10 @@
+---
+#
+# This file can contain any ansible or commands that may be wanted to run
+# from the undercloud.
+#
+- name: Run External Update Step Tasks
+  debug:
+    msg: >-
+      This is an example of an external update task execution which is
+      run on the undercloud.

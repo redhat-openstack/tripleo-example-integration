@@ -1,0 +1,10 @@
+---
+#
+# This file can contain any ansible tasks that need to be run on the system
+# where the service that calls this is located.
+#
+- name: Run Upgrade Step Tasks
+  debug:
+    msg: >-
+      This is an example of an upgrade step task execution that is run on the
+      system where the service is being configured.

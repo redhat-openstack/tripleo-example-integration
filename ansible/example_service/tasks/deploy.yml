@@ -1,0 +1,10 @@
+---
+#
+# This file can contain any ansible tasks that need to be run on the system
+# where the service that calls this is located.
+#
+- name: Run Deploy Step Tasks
+  debug:
+    msg: >-
+      This is an example of a deploy step task execution that is run on the
+      system where the service is being configured.

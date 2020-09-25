@@ -165,20 +165,23 @@ outputs:
             mode: "{{ item.mode }}"
           with_items:
             - { 'path': /var/log/containers/example_service, 'setype': container_file_t, 'mode': '0750' }
+        - name: Run an ansible role
+          include_role:
+            name: example_service
+          vars:
+            example_service_param: {get_param: ExampleServiceParamExample}
       deploy_steps_tasks:
         - name: Configure example_service on the remote host
           include_role:
             name: example_service
-            tasks_from: install
-          vars:
-            example_service_param: {get_param: ExampleServiceParamExample}
+            tasks_from: deploy
           when:
             - step|int == 1
       external_deploy_tasks:
         - name: Configure example_service from the Undercloud
           include_role:
             name: example_service
-            tasks_from: install
+            tasks_from: external_deploy
           when:
             - step|int == 1
       update_tasks:
@@ -192,7 +195,7 @@ outputs:
         - name: Update example_service from the Undercloud
           include_role:
             name: example_service
-            tasks_from: update_from_undercloud
+            tasks_from: external_update
           when:
             - step|int == 1
       upgrade_tasks:
@@ -206,7 +209,7 @@ outputs:
         - name: Upgrade example_service from the Undercloud
           include_role:
             name: example_service
-            tasks_from: upgrade_from_undercloud
+            tasks_from: external_upgrade
           when:
             - step|int == 1
       # TODO(emilien) figure that out later if actually needed (TLS?)

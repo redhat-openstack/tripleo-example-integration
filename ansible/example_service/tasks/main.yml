@@ -1,7 +1,17 @@
 ---
-# tasks file for example_service
+#
+# This file can contain any ansible tasks that need to be run on the system
+# where the service that calls this is located.
+#
 - name: Ensure /opt/example_service exists
   become: true
   file:
     path: "{{ example_service_dir }}"
     state: directory
+
+- name: Write example_service_param
+  become: true
+  file:
+    dest: "{{ external_service_dir }}/example_param"
+    content: "{{ example_service_param | default('Not Set') }}"
+    mode: "0644"
