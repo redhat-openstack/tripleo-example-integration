@@ -18,8 +18,20 @@ Requires:       python3dist(ansible)
 Requires:       openstack-tripleo-heat-templates
 
 %description
+Example TripleO 3rd party integration. The main package includes all the
+files that need to be included on the Undercloud. This can included
+scripts, ansible roles, and tripleo-heat-template related items.
 
-Example TripleO 3rd party integration
+%package -n puppet-%{shortname}
+Summary:        Puppet modules for Example TripleO 3rd party integration
+Requires:       puppet
+
+%description -n puppet-%{shortname}
+Puppet modules for the example TripleO 3rd party integration. This package
+will need to be included on the remote systems where it is used. This is
+usually handled as part of a virt-customize action on overcloud-full or
+provided via a repository to the overcloud that is available at deployment
+time.
 
 %prep
 %autosetup -n %{name}-%{upstream_version} -S git
@@ -53,10 +65,13 @@ cp -r tripleo/network/* %{buildroot}%{_datadir}/openstack-tripleo-heat-templates
 # TODO: list role
 %{_datadir}/ansible/roles/*
 # TODO: list modules
-%{_datadir}/openstack-puppet/modules/*
 %{_datadir}/openstack-tripleo-heat-templates/environments/%{shortname}
 %{_datadir}/openstack-tripleo-heat-templates/deployment/%{shortname}
 %{_datadir}/openstack-tripleo-heat-templates/network/%{shortname}
 
+%files -n puppet-%{shortname}
+%doc README*
+%license LICENSE
+%{_datadir}/openstack-puppet/modules/*
 
 %changelog
