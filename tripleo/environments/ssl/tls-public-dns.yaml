@@ -1,8 +1,0 @@
-# This environment file is used when enabling tls-endpoints-public-dns
-
-parameter_defaults:
-  EndpointMapOverride:
-    ExampleServicePublic:
-      protocol: 'https'
-      port: '13181'
-      host: 'CLOUDNAME'

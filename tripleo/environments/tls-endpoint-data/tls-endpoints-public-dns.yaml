@@ -1,0 +1,10 @@
+###############################################################################
+# This file contains the ExampleService EndpointMap data that needs to be
+# merged with `tls-endpoints-public-dns.yaml` that is shipped with
+# openstack-tripleo-heat-templates
+###############################################################################
+parameter_defaults:
+  EndpointMap:
+    ExampleServiceAdmin: {protocol: 'http', port: '8181', host: 'IP_ADDRESS'}
+    ExampleServiceInternal: {protocol: 'http', port: '8181', host: 'IP_ADDRESS'}
+    ExampleServicePublic: {protocol: 'https', port: '13181', host: 'CLOUDNAME'}
