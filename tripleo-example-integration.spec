@@ -41,9 +41,9 @@ cp -r puppet/* %{buildroot}%{_datadir}/openstack-puppet/modules/
 install -d -m 0755 %{buildroot}%{_datadir}/openstack-tripleo-heat-templates/environments/%{shortname}
 cp -r tripleo/environments/* %{buildroot}%{_datadir}/openstack-tripleo-heat-templates/environments/%{shortname}/
 install -d -m 0755  %{buildroot}%{_datadir}/openstack-tripleo-heat-templates/deployment/%{shortname}
-cp -r tripleo/deployment/*%{buildroot}%{_datadir}/openstack-tripleo-heat-templates/deployment/%{shortname}/
+cp -r tripleo/deployment/* %{buildroot}%{_datadir}/openstack-tripleo-heat-templates/deployment/%{shortname}/
 install -d -m 0755  %{buildroot}%{_datadir}/openstack-tripleo-heat-templates/network/%{shortname}
-cp -r tripleo/network/*%{buildroot}%{_datadir}/openstack-tripleo-heat-templates/network/%{shortname}/
+cp -r tripleo/network/* %{buildroot}%{_datadir}/openstack-tripleo-heat-templates/network/%{shortname}/
 
 %files
 %doc README*
