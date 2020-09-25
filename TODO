@@ -14,5 +14,6 @@
 - Create dumb rpm/service for example to deploy (in container too)
 - WIP: Bonus: rpm packaging
 - DONE: Bonus: basic structure for a clean Ansible role (chrony as example?)
-- Bonus: basic puppet module example (for use with container configs)
+- DONE: Bonus: basic puppet module example (for use with container configs)
+- Bonus: puppet provider to modify a config file
 - Extra: Have endpoint map file generated at build time
