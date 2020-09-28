@@ -1,3 +1,13 @@
+Work to do:
+- Role modification (Depends-On: https://review.opendev.org/754212)
+- Package deployment methods
+  * virt-customize overcloud-full (doc)
+  * deployed-server rpm install with repos
+- Create dumb rpm/service for example to deploy (in container too)
+- Bonus: puppet provider to modify a config file
+- Extra: Have endpoint map file generated at build time
+
+Work completed:
 - DONE: Network endpoint integration (EndpointMap, ServiceNetMap)
 - DONE: Keystone resources (endpoints, users, etc)
 - DONE: Database resources (MySQL DB, user, perms)
@@ -7,13 +17,6 @@
   * startup containers, using kolla interface to start containers
   * all framework task types
 - DONE: Container Image layout (TCIB)
-- Role modification (Depends-On: https://review.opendev.org/754212)
-- Package deployment methods
-  * virt-customize overcloud-full (doc)
-  * deployed-server rpm install with repos
-- Create dumb rpm/service for example to deploy (in container too)
-- WIP: Bonus: rpm packaging
+- DONE: Bonus: rpm packaging
 - DONE: Bonus: basic structure for a clean Ansible role (chrony as example?)
 - DONE: Bonus: basic puppet module example (for use with container configs)
-- Bonus: puppet provider to modify a config file
-- Extra: Have endpoint map file generated at build time
