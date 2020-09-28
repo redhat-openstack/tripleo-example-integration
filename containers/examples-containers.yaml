@@ -1,0 +1,8 @@
+---
+container_images:
+- imagename: myregistry.io/example-namespace/example-service:current
+  image_source: tripleo
+- imagename: myregistry.io/example-namespace/parent_service:current
+  image_source: tripleo
+- imagename: myregistry.io/example-namespace/child_service:current
+  image_source: tripleo
